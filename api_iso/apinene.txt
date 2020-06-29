@@ -1,4 +1,4 @@
-// API = apiene carbon skeleton; api (lowercase) = carbon skeleton shortened due to scission of alkoxy raAPcals
+// API = apiene carbon skeleton; api (lowercase) = carbon skeleton shortened due to scission of alkoxy radicals
 // OHn = the n-th step of autoxidation, initiated by OH
 // prefix 'a': autoxidation from RO to RO2, the parity of O atoms changes
 // AP = accretion product
@@ -6,7 +6,7 @@
 // -----autoxidation step 1-----
 // RO2 -> RO -> aRO2
 %KRO2HO2 : API_OH1_RO2 + HO2 = API_OH1_OOH;
-%1.2e17*exp(-1.2077e4/TEMP) : API_OH1_RO2 = API_OH2_RO2;  // autoxidation, APrectly to next step
+%1.2e17*exp(-1.2077e4/TEMP) : API_OH1_RO2 = API_OH2_RO2;  // autoxidation, directly to next step
 %2e-12*RO2*a11 : API_OH1_RO2 = API_OH1_AP; // since RO2 pool doesnt present in the equation, it should be multiplied to rate coefficnent
 %2e-12*RO2*a12 : API_OH1_RO2 = API_OH1_RO;  // RO product
 %2e-12*RO2*a13 : API_OH1_RO2 = API_OH1_CHO;  // peroxy permutation reaction (with RO2) to form CHO(carbonyl) 
@@ -15,8 +15,8 @@
 %KRO2NO*b11 : API_OH1_RO2 + NO = API_OH1_RO + NO2;  //Functionalization of RO2 when they react with NO (RO2 + NO -> RO + NO2)
 %KRO2NO*b12 : API_OH1_RO2 + NO = API_OH1_ON;  // PAN-like organic nitrate
 
-%KDEC*c11 : API_OH1_RO = api_OH1_RO2;  //'q-RO2', scission of alkoxy raAPcals, C atom(s) lost (denoted with lower-case prefix)-> HOM RO2
-%KDEC*c12 : API_OH1_RO = api_OH1_PP; // 'q-PP', also scission of alkoxy raAPcals, but the product is closed shell; might be ROH?
+%KDEC*c11 : API_OH1_RO = api_OH1_RO2;  //'q-RO2', scission of alkoxy radicals, C atom(s) lost (denoted with lower-case prefix)-> HOM RO2
+%KDEC*c12 : API_OH1_RO = api_OH1_PP; // 'q-PP', also scission of alkoxy radicals, but the product is closed shell; might be ROH?
 %KDEC : API_OH1_RO = aAPI_OH1_RO2; // 'aQ1-RO2', passing through the alkoxy pathway (O number: 4->3->5->4->6); RO + O2 -> RO2
 %KROSEC*O2 : API_OH1_RO = API_OH1_CHO + HO2; // 'q-PP=O', H-abstraction with O2 from RO (presumably to form HO2 and aldehyde)
 %1.2e18*exp(-1.2077e4/TEMP) : aAPI_OH1_RO2 = aAPI_OH2_RO2;  // autoxidation, to next step
