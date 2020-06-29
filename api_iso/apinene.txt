@@ -1,0 +1,117 @@
+// API = apiene carbon skeleton; api (lowercase) = carbon skeleton shortened due to scission of alkoxy raAPcals
+// OHn = the n-th step of autoxidation, initiated by OH
+// prefix 'a': autoxidation from RO to RO2, the parity of O atoms changes
+// AP = accretion product
+
+// -----autoxidation step 1-----
+// RO2 -> RO -> aRO2
+%KRO2HO2 : API_OH1_RO2 + HO2 = API_OH1_OOH;
+%1.2e17*exp(-1.2077e4/TEMP) : API_OH1_RO2 = API_OH2_RO2;  // autoxidation, APrectly to next step
+%2e-12*RO2*a11 : API_OH1_RO2 = API_OH1_AP; // since RO2 pool doesnt present in the equation, it should be multiplied to rate coefficnent
+%2e-12*RO2*a12 : API_OH1_RO2 = API_OH1_RO;  // RO product
+%2e-12*RO2*a13 : API_OH1_RO2 = API_OH1_CHO;  // peroxy permutation reaction (with RO2) to form CHO(carbonyl) 
+%2e-12*RO2*a14 : API_OH1_RO2 = API_OH1_COH;  // peroxy permutation reaction (with RO2) to form COH(alcohol)
+
+%KRO2NO*b11 : API_OH1_RO2 + NO = API_OH1_RO + NO2;  //Functionalization of RO2 when they react with NO (RO2 + NO -> RO + NO2)
+%KRO2NO*b12 : API_OH1_RO2 + NO = API_OH1_ON;  // PAN-like organic nitrate
+
+%KDEC*c11 : API_OH1_RO = api_OH1_RO2;  //'q-RO2', scission of alkoxy raAPcals, C atom(s) lost (denoted with lower-case prefix)-> HOM RO2
+%KDEC*c12 : API_OH1_RO = api_OH1_PP; // 'q-PP', also scission of alkoxy raAPcals, but the product is closed shell; might be ROH?
+%KDEC : API_OH1_RO = aAPI_OH1_RO2; // 'aQ1-RO2', passing through the alkoxy pathway (O number: 4->3->5->4->6); RO + O2 -> RO2
+%KROSEC*O2 : API_OH1_RO = API_OH1_CHO + HO2; // 'q-PP=O', H-abstraction with O2 from RO (presumably to form HO2 and aldehyde)
+%1.2e18*exp(-1.2077e4/TEMP) : aAPI_OH1_RO2 = aAPI_OH2_RO2;  // autoxidation, to next step
+
+%2e-12*RO2 : api_OH1_RO2 = api_OH1_AP; 
+
+// aRO2 -> aRO -> RO2(next step)
+%KRO2HO2 : aAPI_OH1_RO2 + HO2 = aAPI_OH1_OOH;
+%2e-12*RO2*d11 : aAPI_OH1_RO2 = aAPI_OH1_AP;
+%2e-12*RO2*d12 : aAPI_OH1_RO2 = aAPI_OH1_RO;
+%2e-12*RO2*d13 : aAPI_OH1_RO2 = aAPI_OH1_CHO;  // permutaion product: RO2 + RO2 = R-CHO + R-COH + O2 
+%2e-12*RO2*d14 : aAPI_OH1_RO2 = aAPI_OH1_COH; 
+
+%KRO2NO*e11 : aAPI_OH1_RO2 + NO = aAPI_OH1_RO + NO2;
+%KRO2NO*e12 : aAPI_OH1_RO2 + NO = aAPI_OH1_ON;  
+
+%KDEC*f11 : aAPI_OH1_RO = aapi_OH1_RO2; 
+%KDEC*f13 : aAPI_OH1_RO = aapi_OH1_PP;
+%KDEC : aAPI_OH1_RO = API_OH2_RO2; // RO ->(autoxidation)-> RO2(next step)
+%KROSEC*O2 : aAPI_OH1_RO = API_OH1_CHO + HO2;  // share the same pool with API_OH1_CHO above 
+
+%2e-12*RO2 : api_OH1_RO2 = aapi_OH1_AP; 
+
+
+// -----autoxidation step 2-----
+// RO2 -> RO -> aRO2
+%KRO2HO2 : API_OH2_RO2 + HO2 = API_OH2_OOH;
+%1.2e18*exp(-1.2077e4/TEMP) : API_OH2_RO2 = API_OH3_RO2;  // autoxidation, to next step
+%2e-12*RO2*a21 : API_OH2_RO2 = API_OH2_AP;
+%2e-12*RO2*a22 : API_OH2_RO2 = API_OH2_RO;
+%2e-12*RO2*a23 : API_OH2_RO2 = API_OH2_CHO; 
+%2e-12*RO2*a24 : API_OH2_RO2 = API_OH2_COH;  
+
+%KRO2NO*b21 : API_OH2_RO2 + NO = API_OH2_RO + NO2;
+%KRO2NO*b22 : API_OH2_RO2 + NO = API_OH2_ON; 
+
+%KDEC*c21 : API_OH2_RO = api_OH2_RO2; 
+%KDEC*c22 : API_OH2_RO = api_OH2_PP;
+%KDEC : API_OH2_RO = aAPI_OH2_RO2; 
+%KROSEC*O2 : API_OH2_RO = API_OH2_CHO + HO2; 
+
+%6e17*exp(-1.2077e4/TEMP) : aAPI_OH2_RO2 = aAPI_OH3_RO2;  // autoxidation, to next step, odd number of O
+
+%2e-12*RO2 : api_OH2_RO2 = api_OH2_AP; 
+
+// aRO2 -> aRO -> RO2(next step)
+%KRO2HO2 : aAPI_OH2_RO2 + HO2 = aAPI_OH2_OOH;
+%2e-12*RO2*d21 : aAPI_OH2_RO2 = aAPI_OH2_AP;
+%2e-12*RO2*d22 : aAPI_OH2_RO2 = aAPI_OH2_RO;
+%2e-12*RO2*d23 : aAPI_OH2_RO2 = aAPI_OH2_CHO;  
+%2e-12*RO2*d24 : aAPI_OH2_RO2 = aAPI_OH2_COH; 
+
+%KRO2NO*e21 : aAPI_OH2_RO2 + NO = aAPI_OH2_RO + NO2;
+%KRO2NO*e22 : aAPI_OH2_RO2 + NO = aAPI_OH2_ON;  
+
+%KDEC*f21 : aAPI_OH2_RO = aapi_OH2_RO2;
+%KDEC*f22 : aAPI_OH2_RO = aapi_OH2_PP; 
+%KDEC : aAPI_OH2_RO = API_OH3_RO2; 
+%KROSEC*O2 : aAPI_OH2_RO = API_OH2_CHO + HO2; 
+
+%2e-12*RO2 : api_OH2_RO2 = aapi_OH2_AP; 
+
+
+// -----autoxidation step 3-----
+// RO2 -> RO -> aRO2
+%KRO2HO2 : API_OH3_RO2 + HO2 = API_OH3_OOH;  // autoxidation termination
+%2e-12*RO2*a31 : API_OH3_RO2 = API_OH3_AP;
+%2e-12*RO2*a32 : API_OH3_RO2 = API_OH3_RO;
+%2e-12*RO2*a33 : API_OH3_RO2 = API_OH3_CHO; 
+%2e-12*RO2*a34 : API_OH3_RO2 = API_OH3_COH;  
+
+%KRO2NO*b31 : API_OH3_RO2 + NO = API_OH3_RO + NO2;
+%KRO2NO*b32 : API_OH3_RO2 + NO = API_OH3_ON; 
+
+%KDEC*c31 : API_OH3_RO = api_OH3_RO2; 
+%KDEC*c33 : API_OH3_RO = api_OH3_PP;
+%KDEC : API_OH3_RO = aAPI_OH3_RO2;  // autoxidation termination
+%KROSEC*O2 : API_OH3_RO = API_OH3_CHO + HO2; 
+
+%2e-12*RO2 : api_OH3_RO2 = api_OH3_AP; 
+
+// aRO2 -> aRO -> RO2(next step)
+%KRO2HO2 : aAPI_OH3_RO2 + HO2 = aAPI_OH3_OOH;
+%2e-12*RO2*d31 : aAPI_OH3_RO2 = aAPI_OH3_AP;
+%2e-12*RO2*d32 : aAPI_OH3_RO2 = aAPI_OH3_RO;
+%2e-12*RO2*d33 : aAPI_OH3_RO2 = aAPI_OH3_CHO;  
+%2e-12*RO2*d34 : aAPI_OH3_RO2 = aAPI_OH3_COH; 
+
+%KRO2NO*e31 : aAPI_OH3_RO2 + NO = aAPI_OH3_RO + NO2;
+%KRO2NO*e32 : aAPI_OH3_RO2 + NO = aAPI_OH3_ON;  
+
+%KDEC*f31 : aAPI_OH3_RO = aapi_OH3_RO2; 
+%KDEC*f33 : aAPI_OH3_RO = aapi_OH3_PP; 
+%KROSEC*O2 : aAPI_OH3_RO = API_OH3_CHO + HO2; 
+
+%2e-12*RO2 : api_OH3_RO2 = aapi_OH3_AP; 
+
+// autoxidation terminated
